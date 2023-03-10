@@ -2,6 +2,8 @@ import streamlit as st
 from PIL import Image
 import pandas as pd
 import numpy as np
+import pydeck as pdk
+
 
 
 
@@ -100,6 +102,36 @@ elif menu == "Filtrado":
             st.dataframe(menos_207)
         
 
-        
 elif menu == "BONUS":
-    st.write("Logica de la pestaña 3")
+    st.title('Mapa 3D')
+
+    st.pydeck_chart(pdk.Deck(
+        map_style=None,
+        initial_view_state=pdk.ViewState(
+            latitude=37.4,
+            longitude=-6,
+            zoom=11,
+            pitch=50,
+        ),
+        layers=[
+            pdk.Layer(
+            'HexagonLayer',
+            data=df,
+            get_position='[LON, LAT]',
+            radius=200,
+            elevation_scale=4,
+            elevation_range=[0, 1000],
+            pickable=True,
+            extruded=True,
+            ),
+            pdk.Layer(
+                'ScatterplotLayer',
+                data=df,
+                get_position='[LON, LAT]',
+                get_color='[200, 30, 0, 160]',
+                get_radius=200,
+            ),
+        ],
+    ))
+
+    
